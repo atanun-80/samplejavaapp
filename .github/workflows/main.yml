@@ -9,6 +9,7 @@ jobs:
      - name: mvn compile
        run: mvn compile
   code-review:
+    needs: compile
     runs-on: ubuntu-latest
     steps: 
      - name: get code
@@ -16,6 +17,7 @@ jobs:
      - name: review
        run: mvn -P metrics pmd:pmd
   unit-test:
+    needs: code-review
     runs-on: ubuntu-latest
     steps: 
      - name: get code
@@ -23,6 +25,7 @@ jobs:
      - name: test
        run: mvn test
   code-coverage:
+    needs: unit-test
     runs-on: ubuntu-latest
     steps: 
      - name: get code
@@ -30,6 +33,7 @@ jobs:
      - name: verify
        run: mvn verify
   package:
+    needs: code-coverage
     runs-on: ubuntu-latest
     steps: 
      - name: get code
